@@ -1,0 +1,46 @@
+From bcb63a8caca818adb9bf01d8a2c6f82615472cfd Mon Sep 17 00:00:00 2001
+From: hydai <hydai@secondstate.io>
+Date: Tue, 12 Sep 2023 15:50:22 +0800
+Subject: [PATCH] [AOT] remove IPO.h for llvm17
+
+Signed-off-by: hydai <hydai@secondstate.io>
+---
+ lib/aot/compiler.cpp | 1 -
+ lib/aot/llvm.h       | 2 --
+ 2 files changed, 3 deletions(-)
+
+diff --git a/lib/aot/compiler.cpp b/lib/aot/compiler.cpp
+index 49cfb462..2ec90ba7 100644
+--- a/lib/aot/compiler.cpp
++++ b/lib/aot/compiler.cpp
+@@ -5317,7 +5317,6 @@ Expect<void> Compiler::compile(Span<const Byte> Data, const AST::Module &Module,
+       if (Conf.getCompilerConfigure().getOptimizationLevel() ==
+           CompilerConfigure::OptimizationLevel::O0) {
+         FP.addTailCallEliminationPass();
+-        MP.addAlwaysInlinerPass();
+       } else {
+         auto PMB = LLVM::PassManagerBuilder::create();
+         auto [OptLevel, SizeLevel] =
+diff --git a/lib/aot/llvm.h b/lib/aot/llvm.h
+index 98982b70..5ce056c1 100644
+--- a/lib/aot/llvm.h
++++ b/lib/aot/llvm.h
+@@ -8,7 +8,6 @@
+ #include <llvm-c/Object.h>
+ #include <llvm-c/Target.h>
+ #include <llvm-c/TargetMachine.h>
+-#include <llvm-c/Transforms/IPO.h>
+ #include <llvm-c/Transforms/PassManagerBuilder.h>
+ #include <llvm-c/Transforms/Scalar.h>
+ #include <llvm-c/Types.h>
+@@ -1535,7 +1534,6 @@ public:
+   void addTailCallEliminationPass() noexcept {
+     LLVMAddTailCallEliminationPass(Ref);
+   }
+-  void addAlwaysInlinerPass() noexcept { LLVMAddAlwaysInlinerPass(Ref); }
+ 
+   void initializeFunctionPassManager() noexcept {
+     LLVMInitializeFunctionPassManager(Ref);
+-- 
+2.34.1
+
