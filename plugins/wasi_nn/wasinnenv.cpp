@@ -25,8 +25,10 @@ std::map<std::string_view, Backend> BackendMap = {
     {"autodetect"sv, Backend::Autodetect},
     {"ggml"sv, Backend::GGML}};
 
-std::map<std::string_view, Device> DeviceMap = {
-    {"cpu"sv, Device::CPU}, {"gpu"sv, Device::GPU}, {"tpu"sv, Device::TPU}};
+std::map<std::string_view, Device> DeviceMap = {{"cpu"sv, Device::CPU},
+                                                {"gpu"sv, Device::GPU},
+                                                {"tpu"sv, Device::TPU},
+                                                {"auto"sv, Device::AUTO}};
 
 bool load(const std::filesystem::path &Path, std::vector<uint8_t> &Data) {
   std::ifstream File(Path, std::ios::binary);
